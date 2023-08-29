@@ -7,7 +7,7 @@ You can either clone the [EEGLAB Github repo](https://github.com/sccn/eeglab) or
 
 ## Buzcode
 
-We use many of the codes developed by the Buzsaki lab to analyze our EEG data. We recommend downloading and using the [development branch of the repository](https://github.com/buzsakilab/buzcode/tree/dev). Download it, compile it with the supplied MATLAB script, and add it to your MATLAB path with all subfolders.
+We use many of the codes developed by the Buzsaki lab to analyze our EEG data. We recommend downloading and using the [development branch of the repository](https://github.com/buzsakilab/buzcode/tree/dev). Download it, compile it with the supplied MATLAB script, and add it to your MATLAB path with all subfolders. You may also need to download a compiler for this. We recommend downloading [MinGW](https://www.mathworks.com/support/requirements/supported-compilers.html).
 
 ## AR Fit
 

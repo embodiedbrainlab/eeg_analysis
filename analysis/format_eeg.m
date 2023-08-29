@@ -1,9 +1,4 @@
-%% WE NEED TO CORRECT WHOLE DATA SECTIONS OF CODE! WE SHOULD ONLY BE 
-%% EXTRACTING DATA BETWEEN RELEVANT M1 MARKERS!
-% Use code for replacing chunks of data to find the first and last M1
-% markers you need!
-
-%% Formatting EEGLAB Data for Buzcode
+%% Formatting EEGLAB Data for Analysis
 % The following code will take complete preprocessed data of both the
 % instructor and the participant and create separate .mat files for
 % hyperscanning analysiso on Buzcode.
@@ -11,15 +6,9 @@
 % Note that you must keep both .mat files in a folder named "[pariticipant
 % ID]_[pretest/posttest]"
 
-% IMPORTANT: Change lines 22 and 103 each time you run the code to load
-% relevant .mat files
-
-clc;
-clear;
-close all;
-
 %% Load INSTRUCTOR Data
-load("danc001_pre_RR.mat")
+
+load("danc001_post_RR.mat") %input instructor .mat file here
 
 %% Convert Times to Seconds
 times_s = times/1000;
@@ -32,18 +21,6 @@ end
 
 %% Create Event Types for indexing
 event_types ={event.type};
-
-%% Whole Data - INSTRUCTOR
-%find the first and last M1 and use similar commands as those below
-
-m1 = find(ismember(event_types,'M  1')); % lists M1 marker in "event_types"
-
-m1_first_ind = event(m1(1)).latency;
-m1_last_ind = event(m1(end)).latency;
-
-instructor_wholedata.data = data(:,m1_first_ind:m1_last_ind).';
-instructor_wholedata.timestamps = (0:0.002:((m1_last_ind - m1_first_ind)*2/1000)).';
-instructor_wholedata.samplingRate = srate;
 
 %% Baseline - INSTRUCTOR
 
@@ -99,24 +76,24 @@ instructor_improv.data = data(:,improv_start_ind:improv_end_ind).';
 instructor_improv.timestamps = (0:0.002:((improv_end_ind - improv_start_ind)*2/1000)).';
 instructor_improv.samplingRate = srate; %usally 500 on the .mat file
 
+%% Whole Data - Instructor
+% We can assume that the whole data is now lined up between "Start
+% Basline" and "End Improv" because they were manually calculated based
+% on the M1 markers that were collected during recording.
+
+instructor_wholedata.data = data(:,baseline_start_ind:improv_end_ind).';
+instructor_wholedata.timestamps = (0:0.002:((improv_end_ind - baseline_start_ind)*2/1000)).';
+instructor_wholedata.samplingRate = srate;
+
 %% Load PARTICIPANT Data
-load("danc001_pre.mat")
+
+load("danc001_post.mat") %input participant file name here
 
 %% Convert Times to Seconds
 times_s = times/1000;
 
 %% Create Event Types for indexing
 event_types ={event.type};
-
-%% Whole Data - PARTICIPANT
-m1 = find(ismember(event_types,'M  1')); % lists M1 marker in "event_types"
-
-m1_first_ind = event(m1(1)).latency;
-m1_last_ind = event(m1(end)).latency;
-
-participant_wholedata.data = data(:,m1_first_ind:m1_last_ind).';
-participant_wholedata.timestamps = (0:0.002:((m1_last_ind - m1_first_ind)*2/1000)).';
-participant_wholedata.samplingRate = srate;
 
 %% Baseline - PARTICIPANT
 
@@ -172,13 +149,15 @@ participant_improv.data = data(:,improv_start_ind:improv_end_ind).';
 participant_improv.timestamps = (0:0.002:((improv_end_ind - improv_start_ind)*2/1000)).';
 participant_improv.samplingRate = srate; %usally 500 on the .mat file
 
+%% Whole Data - PARTICIPANT
+
+participant_wholedata.data = data(:,baseline_start_ind:improv_end_ind).';
+participant_wholedata.timestamps = (0:0.002:((improv_end_ind - baseline_start_ind)*2/1000)).';
+participant_wholedata.samplingRate = srate;
+
 %% Get basename
 
-basepath = cd;
-if strcmp(basepath(end),filesep);
-    basepath = basepath(1:end-1);
-end
-[~,basename] = fileparts(basepath);
+basename = bz_BasenameFromBasepath(cd);
 
 %% Saving Data
 % Ideally we want to tell MATLAB to create a new folder and save the files

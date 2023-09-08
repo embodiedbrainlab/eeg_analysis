@@ -9,6 +9,7 @@ coherence <- coherence %>%
   mutate(test_session = fct_relevel(test_session, c("pretest", "posttest")),
          condition = fct_relevel(condition, c("dance","control")),
          freq_band = fct_relevel(freq_band, c("delta","theta","alpha","beta","lowgamma","higamma")),
+         activity = fct_relevel(activity, c("baseline","eyegaze","convo","follow","lead","improv")),
          channel = fct_relevel(channel, c("Fp1","Fz","F3","F7","FT9","FC5","FC1",
                                           "C3","T7","TP9","CP5","CP1","Pz","P3",
                                           "P7","O1","Oz","O2","P4","P8","TP10",

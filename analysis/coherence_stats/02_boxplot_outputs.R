@@ -8,7 +8,8 @@ coherence <- read_csv("coherence_conditions.csv")
 coherence <- coherence %>%
   mutate(test_session = fct_relevel(test_session, c("pretest", "posttest")),
          condition = fct_relevel(condition, c("dance","control")),
-         freq_band = fct_relevel(freq_band, c("delta","theta","alpha","beta","lowgamma","higamma")))
+         freq_band = fct_relevel(freq_band, c("delta","theta","alpha","beta","lowgamma","higamma")),
+         activity = fct_relevel(activity, c("baseline","eyegaze","convo","follow","lead","improv")))
 
 # Summary Boxplot ---------------------------------------------------------
 ggplot(coherence, aes(x = test_session, y = avg_coh, fill = activity)) + 

@@ -1,4 +1,4 @@
-function [] = analyze_eeg(main_directory,FrequencyBand,padding)
+function [] = analyze_eeg(main_directory, FrequencyBand, padding)
     %% Analyzing EEG Data
     % This code is to be run after pre-processing EEG data through EEGLAB
     % The code assumes that the data consists of 32 channels and assesses the
@@ -140,13 +140,10 @@ function [] = analyze_eeg(main_directory,FrequencyBand,padding)
             hold on
             plot(pow2(128:end,i))
             xlim([1 xlimInd])
-            if select_activity == "wholedata"
-                xticks(1:10000:xlimInd)
-                xticklabels(round(freqs(1:10000:xlimInd)))
-            else
-                xticks(1:2000:xlimInd)
-                xticklabels(round(freqs(1:2000:xlimInd)))
-            end
+            if select_activity = "wholedata"
+                
+            xticks(1:2000:xlimInd)
+            xticklabels(round(freqs(1:2000:xlimInd)))
             ylim([0 10])
             title(['Channel ' labels{i} ' Frequency Power'])
             ylabel('Power (a.u.)')
